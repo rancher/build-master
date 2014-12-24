@@ -1,0 +1,26 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+PATH=$(pwd)/build-tools/bin:$PATH
+
+. ./scripts/common-vars
+
+build_projects()
+{
+    local need_to_build
+
+    for project in "${PROJECTS[@]}"; do
+        echo "checking... ${project}"
+        cd ${PROJECT_MAP["${project}_WORK_DIR"]}
+
+        need_to_build=$(cat .rebuild)
+        if [[ "${need_to_build}" == "true" || ${project} == "cattle" ]]; then
+            echo "building.. ${project}"
+            wrap build
+        fi
+
+        cd ..
+    done
+}
+
+build_projects

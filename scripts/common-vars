@@ -1,0 +1,34 @@
+: ${CATTLE_REPO:="https://github.com/rancherio/cattle.git"}
+: ${CATTLE_WORK_DIR:=cattle}
+: ${CATTLE_COMMIT:=master}
+
+: ${PYTHON_AGENT_REPO:="https://github.com/rancherio/python-agent.git"}
+: ${PYTHON_AGENT_WORK_DIR:=python-agent}
+: ${PYTHON_AGENT_COMMIT:=master}
+
+: ${NODE_AGENT_REPO:="https://github.com/rancherio/node-agent.git"}
+: ${NODE_AGENT_WORK_DIR:=node-agent}
+: ${NODE_AGENT_COMMIT:=master}
+
+: ${BUILD_TOOLS_REPO:="https://github.com/rancherio/build-tools.git"}
+: ${BUILD_TOOLS_COMMIT:=master}
+
+: ${CATTLE_UI_URL:="http://cdn.rancher.io/ui/latest/static/index.html"}
+ 
+declare -A PROJECT_MAP
+
+PROJECT_MAP[CATTLE_REPO]="${CATTLE_REPO}"
+PROJECT_MAP[CATTLE_WORK_DIR]="${CATTLE_WORK_DIR}"
+PROJECT_MAP[CATTLE_COMMIT]="${CATTLE_COMMIT}"
+
+PROJECT_MAP[NODE_AGENT_REPO]="${NODE_AGENT_REPO}"
+PROJECT_MAP[NODE_AGENT_WORK_DIR]="${NODE_AGENT_WORK_DIR}"
+PROJECT_MAP[NODE_AGENT_COMMIT]="${NODE_AGENT_COMMIT}"
+
+
+PROJECT_MAP[PYTHON_AGENT_REPO]="${PYTHON_AGENT_REPO}"
+PROJECT_MAP[PYTHON_AGENT_WORK_DIR]="${PYTHON_AGENT_WORK_DIR}"
+PROJECT_MAP[PYTHON_AGENT_COMMIT]="${PYTHON_AGENT_COMMIT}"
+
+export PROJECT_MAP CATTLE_API_UI_INDEX
+export PROJECTS=("CATTLE" "NODE_AGENT" "PYTHON_AGENT")

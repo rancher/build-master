@@ -1,0 +1,60 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+
+. ./scripts/common-vars
+
+export PATH=$PATH:$(pwd)/build-tools/bin
+
+printenv
+
+clone_repo()
+{
+    git clone ${1}
+}
+
+refresh_repos()
+{
+    local head_pre
+    local head_post
+
+    git checkout ${1}
+    head_pre=$(git rev-parse HEAD)
+    git pull -r &&  git clean -qdf
+    head_post=$(git rev-parse HEAD)
+
+    if [ "${head_pre}" != "${head_post}" ]; then
+            echo "true" > .rebuild
+    else
+            echo "false" > .rebuild
+    fi
+}
+
+main()
+{
+    local project 
+    local head_pre
+    local head_post
+    local work_dir
+
+    for project in "${PROJECTS[@]}"; do
+
+        cd $(dirname $0)/..
+
+        work_dir="${PROJECT_MAP[${project}_WORK_DIR]}"
+        echo "Refreshing... ${project}"
+
+        # Clone the repo if it doesn't exist.. else refresh
+        if [ ! -d "./${work_dir}" ]; then
+            clone_repo "${PROJECT_MAP[${project}_REPO]}" 
+            echo "true" > ${work_dir}/.rebuild
+        else
+            cd ./${work_dir}
+            refresh_repos ${PROJECT_MAP[${project}_COMMIT]}
+            cd ..
+        fi
+
+     done
+}
+
+main

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+export PATH=$(pwd)/build-tools/bin:$PATH
+. ./scripts/common-vars
+
+
+./scripts/git-man
+
+wrapdocker
+
+./scripts/build-projects
+
+RUN_ARGS="$RUN_ARGS -v $(pwd)/${PROJECT_MAP[NODE_AGENT_WORK_DIR]}:$(pwd)/${PROJECT_MAP[NODE_AGENT_WORK_DIR]}"
+RUN_ARGS="$RUN_ARGS -v $(pwd)/${PROJECT_MAP[PYTHON_AGENT_WORK_DIR]}:$(pwd)/${PROJECT_MAP[PYTHON_AGENT_WORK_DIR]}"
+RUN_ARGS="$RUN_ARGS -e CATTLE_AGENT_PACKAGE_PYTHON_AGENT_URL=$(pwd)/${PROJECT_MAP[PYTHON_AGENT_WORK_DIR]}"
+RUN_ARGS="$RUN_ARGS -e CATTLE_AGENT_PACKAGE_NODE_AGENT_URL=$(pwd)/${PROJECT_MAP[NODE_AGENT_WORK_DIR]}"
+RUN_ARGS="$RUN_ARGS -e CATTLE_API_UI_INDEX=${CATTLE_UI_URL}"
+RUN_ARGS="$RUN_ARGS -e CATTLE_HTTP_PORT=8080"
+RUN_ARGS="$RUN_ARGS -p 0.0.0.0:8080:8080"
+
+
+cd ./cattle
+wrap "$RUN_ARGS" run
