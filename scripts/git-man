@@ -48,6 +48,8 @@ main()
         if [ ! -d "./${work_dir}" ]; then
             clone_repo "${PROJECT_MAP[${project}_REPO]}" 
             echo "true" > ${work_dir}/.rebuild
+            cd ./${work_dir}
+            git checkout ${PROJECT_MAP[${project}_COMMIT]}
         else
             cd ./${work_dir}
             refresh_repos ${PROJECT_MAP[${project}_COMMIT]}
