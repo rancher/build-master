@@ -39,8 +39,6 @@ main()
 
     for project in "${PROJECTS[@]}"; do
 
-        cd $(dirname $0)/..
-
         work_dir="${PROJECT_MAP[${project}_WORK_DIR]}"
         echo "Refreshing... ${project}"
 
@@ -50,6 +48,7 @@ main()
             echo "true" > ${work_dir}/.rebuild
             cd ./${work_dir}
             git checkout ${PROJECT_MAP[${project}_COMMIT]}
+            cd ..
         else
             cd ./${work_dir}
             refresh_repos ${PROJECT_MAP[${project}_COMMIT]}
@@ -58,5 +57,7 @@ main()
 
      done
 }
+
+cd $(dirname $0)/..
 
 main
