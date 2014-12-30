@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 cd $(dirname $0)/..
 export PATH=$(pwd)/build-tools/bin:$PATH
 . ./scripts/common-vars

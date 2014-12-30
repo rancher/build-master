@@ -1,12 +1,12 @@
 #!/bin/bash
 
+set -e
+
 cd $(dirname $0)/..
 
 . ./scripts/common-vars
 
 export PATH=$PATH:$(pwd)/build-tools/bin
-
-printenv
 
 clone_repo()
 {
