@@ -5,7 +5,7 @@ export PATH=$(pwd)/build-tools/bin:$PATH
 . ./scripts/common-vars
 
 
-./scripts/git-man
+./scripts/git-manager
 
 wrapdocker
 

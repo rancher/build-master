@@ -7,14 +7,12 @@ PATH=$(pwd)/build-tools/bin:$PATH
 
 build_projects()
 {
-    local need_to_build
-
     for project in "${PROJECTS[@]}"; do
         echo "checking... ${project}"
         cd ${PROJECT_MAP["${project}_WORK_DIR"]}
 
         need_to_build=$(cat .rebuild)
-        if [[ "${need_to_build}" == "true" || ${project} == "cattle" ]]; then
+        if [[ "$(< .rebuild)" == "true" ]]; then
             echo "building.. ${project}"
             wrap build
         fi

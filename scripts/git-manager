@@ -20,7 +20,7 @@ refresh_repos()
 
     git checkout ${1}
     head_pre=$(git rev-parse HEAD)
-    git pull -r &&  git clean -qdf
+    git pull -r 
     head_post=$(git rev-parse HEAD)
 
     if [ "${head_pre}" != "${head_post}" ]; then
