@@ -51,7 +51,9 @@ main()
             cd ..
         else
             cd ./${work_dir}
-            refresh_repos ${PROJECT_MAP[${project}_COMMIT]}
+            if [ ! -f .manual ]; then
+                refresh_repos ${PROJECT_MAP[${project}_COMMIT]}
+            fi
             cd ..
         fi
 
