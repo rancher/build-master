@@ -1,6 +1,6 @@
 ## Docker image for running the master branches of Rancher.
 -----------
-This uses a Docker in Docker base image, and if you want speed, then you'll want to restart the internal container. 
+This uses a Docker in Docker base image, and when you want to rebuild... restart the container.
 
 ###Usage
 To build:
@@ -12,9 +12,15 @@ To run:
 The command that is run by default is `/opt/cattle/scripts/run`
 This will checkout all of the repositories, build and fire up a container running on port 8080. This will be exposed out to the base contiainer.
 
+# Simple workflow
+Running this container will pull in all of the major dependencies on the master branch from the Rancher IO Github organization. Every time the container is restarted via:
+`docker restart <container_id>` the container will pull down the latest changes from Github and rebuild if needed.
 
-###Configuration
-In order to configure this image, you can set the following variables:
+To override and/or use personal forks/branches, you can log into the container `docker exec -it <container_id> /bin/bash` and go to the appropriate working directory (cattle, python-agent, node-agent, etc.) and perform git operations. To make them stick `touch .manual` in any directory that you want to take control over, and `echo "true">.rebuild`. Doing this will disable the scripts automatic pull from the repository, and will rebuild if true. (Note if you do not want the build to occur `echo "false">.rebuild` in any manually controled repository)
+
+
+###Advanced Configuration
+Most people will never need to know this. In order to configure this image, you can set the following variables:
 
 ```
 : ${CATTLE_REPO:="https://github.com/rancherio/cattle.git"}
