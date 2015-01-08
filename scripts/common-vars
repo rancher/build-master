@@ -6,6 +6,10 @@
 : ${PYTHON_AGENT_WORK_DIR:=python-agent}
 : ${PYTHON_AGENT_COMMIT:=master}
 
+: ${UI_REPO:="https://github.com/rancherio/ui.git"}
+: ${UI_WORK_DIR:=ui}
+: ${UI_COMMIT:=master}
+
 : ${NODE_AGENT_REPO:="https://github.com/rancherio/node-agent.git"}
 : ${NODE_AGENT_WORK_DIR:=node-agent}
 : ${NODE_AGENT_COMMIT:=master}
@@ -26,9 +30,17 @@ PROJECT_MAP[NODE_AGENT_WORK_DIR]="${NODE_AGENT_WORK_DIR}"
 PROJECT_MAP[NODE_AGENT_COMMIT]="${NODE_AGENT_COMMIT}"
 
 
+PROJECT_MAP[UI_REPO]="${UI_REPO}"
+PROJECT_MAP[UI_WORK_DIR]="${UI_WORK_DIR}"
+PROJECT_MAP[UI_COMMIT]="${UI_COMMIT}"
+
 PROJECT_MAP[PYTHON_AGENT_REPO]="${PYTHON_AGENT_REPO}"
 PROJECT_MAP[PYTHON_AGENT_WORK_DIR]="${PYTHON_AGENT_WORK_DIR}"
 PROJECT_MAP[PYTHON_AGENT_COMMIT]="${PYTHON_AGENT_COMMIT}"
 
 export PROJECT_MAP CATTLE_API_UI_INDEX
-export PROJECTS=("CATTLE" "NODE_AGENT" "PYTHON_AGENT")
+# These projects will be checked out and managed via git-man script
+export GIT_PROJECTS=("CATTLE" "NODE_AGENT" "PYTHON_AGENT" "UI")
+
+# These projects will be checked for build by build-projects script
+export BUILD_PROJECTS=("CATTLE" "NODE_AGENT" "PYTHON_AGENT")

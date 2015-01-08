@@ -13,6 +13,16 @@ clone_repo()
     git clone ${1}
 }
 
+notify()
+{
+    COMMIT=$(git rev-parse HEAD)
+    TAG=$(git tag -l | tail -1)
+    REPO=$(git remote -v|grep origin |tail -1|sed -e 's/\(^[a-z].*github.com\)//' -e 's/^://' -e 's/^\///' |sed -e 's/\.git.*$//')
+    BRANCH=$(git branch -q|grep '^\*'|cut -d' ' -f2)
+
+    COMMIT=$COMMIT TAG=$TAG REPO=$REPO BRANCH=$BRANCH ../scripts/slack-notification
+}
+
 refresh_repos()
 {
     local head_pre
@@ -28,6 +38,8 @@ refresh_repos()
     else
             echo "false" > .rebuild
     fi
+
+    notify
 }
 
 main()
@@ -37,7 +49,7 @@ main()
     local head_post
     local work_dir
 
-    for project in "${PROJECTS[@]}"; do
+    for project in "${GIT_PROJECTS[@]}"; do
 
         work_dir="${PROJECT_MAP[${project}_WORK_DIR]}"
         echo "Refreshing... ${project}"
@@ -48,6 +60,7 @@ main()
             echo "true" > ${work_dir}/.rebuild
             cd ./${work_dir}
             git checkout ${PROJECT_MAP[${project}_COMMIT]}
+            notify
             cd ..
         else
             cd ./${work_dir}
@@ -56,7 +69,6 @@ main()
             fi
             cd ..
         fi
-
      done
 }
 

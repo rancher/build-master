@@ -16,7 +16,7 @@ This will checkout all of the repositories, build and fire up a container runnin
 Running this container will pull in all of the major dependencies on the master branch from the Rancher IO Github organization. Every time the container is restarted via:
 `docker restart <container_id>` the container will pull down the latest changes from Github and rebuild if needed.
 
-To override and/or use personal forks/branches, you can log into the container `docker exec -it <container_id> /bin/bash` and go to the appropriate working directory (cattle, python-agent, node-agent, etc.) and perform git operations. To make them stick `touch .manual` in any directory that you want to take control over, and `echo "true">.rebuild`. Doing this will disable the scripts automatic pull from the repository, and will rebuild if true. (Note if you do not want the build to occur `echo "false">.rebuild` in any manually controled repository)
+To override and/or use personal forks/branches, you can log into the container `docker exec -it <container_id> /bin/bash` and go to the appropriate working directory (cattle, python-agent, node-agent, etc.) and perform git operations. To make them stick `touch .manual` in any directory that you want to take control over.
 
 
 ###Advanced Configuration
