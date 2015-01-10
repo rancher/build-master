@@ -17,10 +17,19 @@ notify()
 {
     COMMIT=$(git rev-parse HEAD)
     TAG=$(git tag -l | tail -1)
+
     REPO=$(git remote -v|grep origin |tail -1|sed -e 's/\(^[a-z].*github.com\)//' -e 's/^://' -e 's/^\///' |sed -e 's/\.git.*$//')
     BRANCH=$(git branch -q|grep '^\*'|cut -d' ' -f2)
 
-    COMMIT=$COMMIT TAG=$TAG REPO=$REPO BRANCH=$BRANCH ../scripts/slack-notification
+    MESSAGE="Rancher IO Latest is now running: ${REPO} at commit: ${COMMIT} on Branch: ${BRANCH}."
+
+    if [ "$(git rev-parse ${TAG})" == "${COMMIT}" ]; then
+        MESSAGE="${MESSAGE} This is the latest released version\n"
+    else
+        MESSAGE="${MESSAGE} <https://github.com/${REPO}/compare/${TAG}...${COMMIT}| Details Here>"
+    fi
+
+    MESSAGE="${MESSAGE}" ../scripts/slack-notification
 }
 
 refresh_repos()

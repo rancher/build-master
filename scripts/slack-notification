@@ -2,9 +2,8 @@
 
 if [ -z $SLACK_WEBHOOK_TOKEN ]; then
     echo "Need a webhook token..." 2>&1
+    echo ${MESSAGE}
     exit 0
 fi
 
-
-curl -X POST https://hooks.slack.com/services/${SLACK_WEBHOOK_TOKEN} -d "{
-    \"text\": \"Rancherio ${REPO} is now running: ${COMMIT} on Branch ${BRANCH}. See Differences here: <https://github.com/${REPO}/compare/${TAG}...${COMMIT}| HERE>\"}"
+curl -X POST https://hooks.slack.com/services/${SLACK_WEBHOOK_TOKEN} -d "{ \"text\": \"${MESSAGE}\" }"
