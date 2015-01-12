@@ -28,9 +28,13 @@ bootstrap_validation_tests()
 run_tests() 
 {
     cd validation-tests
-    echo $(pwd)
     notify "Starting Test Run..."
     docker run -e "CATTLE_TEST_URL=${CATTLE_TEST_URL}" -v $(pwd):/source validation-test-container ./scripts/test
+    if [ "$?" -eq "0" ]; then
+        notify "Tests all Passed"
+    else
+        notify_alert "Rancher Latest Had Validation Test Failures!!!!"
+    fi
 }
 
 export CATTLE_TEST_URL
@@ -66,8 +70,3 @@ done
 
 bootstrap_validation_tests
 run_tests
-if [ "$?" -eq "0" ]; then
-    notify "Tests all Passed"
-else
-    notify_alert "Rancher Latest Had Validation Test Failures!!!!"
-fi
