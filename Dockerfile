@@ -10,5 +10,6 @@ VOLUME /opt/cattle
 WORKDIR /opt/cattle
 
 EXPOSE 8080
+ENV CATTLE_IDEMPOTENT_CHECKS false
 
 CMD [ "/opt/cattle/scripts/run" ]
