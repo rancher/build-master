@@ -6,4 +6,4 @@ if [ -z $SLACK_WEBHOOK_TOKEN ]; then
     exit 0
 fi
 
-curl -X POST https://hooks.slack.com/services/${SLACK_WEBHOOK_TOKEN} -d "{ \"text\": \"${MESSAGE}\" }"
+curl -s -X POST https://hooks.slack.com/services/${SLACK_WEBHOOK_TOKEN} -d "{ \"text\": \"${MESSAGE}\" }"
