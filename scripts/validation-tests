@@ -62,7 +62,7 @@ do
 
     ### If we don't get a response after 30 mins... give up.
     if [ "$i" -eq "299" ]; then
-        echo "Failed to reach environment" 2>&1
+        echo "Failed to reach environment" 1>&2
         notify_alert "Rancher latest environment failed to respond... no tests run."
         exit 1
     fi
