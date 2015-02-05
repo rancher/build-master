@@ -4,10 +4,10 @@ This uses a Docker in Docker base image, and when you want to rebuild... restart
 
 ###Usage
 To build:
-`docker build --rm -t rancher-mbr .`
+`docker build --rm -t rancher-dev-container .`
 
 To run:
-`docker run -it --privileged -p 8080:8080`
+`docker run -it --privileged -p 8080:8080 --name=rancher-dev-container rancher-dev-container`
 
 The command that is run by default is `/opt/cattle/scripts/run`
 This will checkout all of the repositories, build and fire up a container running on port 8080. This will be exposed out to the base contiainer.
