@@ -13,7 +13,6 @@ build_projects()
         echo "checking... ${project}"
         cd ${PROJECT_MAP["${project}_WORK_DIR"]}
 
-        need_to_build=$(cat .rebuild)
         if [[ "$(< .rebuild)" == "true" ]] || [[ -f .manual ]]; then
             echo "building.. ${project}"
             wrap build
