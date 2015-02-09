@@ -40,12 +40,12 @@ refresh_repos()
     git checkout ${1}
     head_pre=$(git rev-parse HEAD)
     git pull -r 
-    git reset --hard HEAD
-    git clean -dxf
     head_post=$(git rev-parse HEAD)
 
     if [ "${head_pre}" != "${head_post}" ]; then
             echo "true" > .rebuild
+            git reset --hard HEAD
+            git clean -dxf
     else
             echo "false" > .rebuild
     fi
