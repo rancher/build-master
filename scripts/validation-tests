@@ -1,6 +1,16 @@
 #!/bin/bash
 
 : ${CATTLE_TEST_URL:="http://latest.rancher.io:8080"}
+: ${PHANTOMJS_WEBDRIVER_PORT:-4444}
+: ${API_AUTH_GITHUB_TEST_USER:-$API_AUTH_GITHUB_TEST_USER}
+: ${API_AUTH_GITHUB_TEST_PASS:-$API_AUTH_GITHUB_TEST_PASS}
+: ${API_AUTH_GITHUB_CLIENT_ID:-$API_AUTH_GITHUB_CLIENT_ID}
+: ${API_AUTH_GITHUB_CLIENT_SECRET:-$API_AUTH_GITHUB_CLIENT_SECRET}
+: ${API_AUTH_RANCHER_TEST_PASS:-$API_AUTH_RANCHER_TEST_PASS}
+
+export CATTLE_TEST_URL PHANTOMJS_WEBDRIVER_PORT
+export API_AUTH_GITHUB_TEST_USER API_AUTH_GITHUB_TEST_PASS
+export API_AUTH_GITHUB_CLIENT_ID API_AUTH_RANCHER_TEST_PASS API_AUTH_GITHUB_CLIENT_SECRET
 
 cd $(dirname $0)/..
 
@@ -29,15 +39,21 @@ run_tests()
 {
     cd validation-tests
     notify "Starting Test Run..."
-    docker run -e "CATTLE_TEST_URL=${CATTLE_TEST_URL}" -v $(pwd):/source validation-test-container ./scripts/test
+    docker run -e "CATTLE_TEST_URL=${CATTLE_TEST_URL}" \
+        -e "PHANTOMJS_WEBDRIVER_PORT=${PHATOMJS_WEBDRIVER_PORT}" \
+        -e "API_AUTH_GITHUB_TEST_USER=${API_AUTH_GITHUB_TEST_USER}" \
+        -e "API_AUTH_GITHUB_TEST_PASS=${API_AUTH_GITHUB_TEST_PASS}" \
+        -e "API_AUTH_GITHUB_CLIENT_ID=${API_AUTH_GITHUB_CLIENT_ID}" \
+        -e "API_AUTH_RANCHER_TEST_PASS=${API_AUTH_RANCHER_TEST_PASS}" \
+        -e "API_AUTH_GITHUB_CLIENT_SECRET=${API_AUTH_GITHUB_CLIENT_SECRET}" \
+        -v $(pwd):/source \
+        validation-test-container ./scripts/test
     if [ "$?" -eq "0" ]; then
         notify "Tests all Passed"
     else
         notify_alert "Rancher Latest Had Validation Test Failures!!!!"
     fi
 }
-
-export CATTLE_TEST_URL
 
 wait_a_bit()
 {
