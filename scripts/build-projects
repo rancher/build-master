@@ -16,8 +16,10 @@ build_projects()
         if [[ "$(< .rebuild)" == "true" ]] || [[ -f .manual ]]; then
             echo "building.. ${project}"
             wrap build
-            if [ ${PROJECT_MAP["${project}_PACKAGE"]} == "true" ]; then
-                wrap package
+            if [ -n ${PROJECT_MAP["${project}_PACKAGE"]} ]; then
+                if [ ${PROJECT_MAP["${project}_PACKAGE"]} == "true" ]; then
+                    wrap package
+                fi
             fi
         fi
 

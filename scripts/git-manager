@@ -43,9 +43,9 @@ refresh_repos()
     head_post=$(git rev-parse HEAD)
 
     if [ "${head_pre}" != "${head_post}" ]; then
-            echo "true" > .rebuild
             git reset --hard HEAD
             git clean -dxf
+            echo "true" > .rebuild
     else
             echo "false" > .rebuild
     fi
