@@ -1,4 +1,4 @@
-FROM rancher/docker-dind-base:v0.4.1
+FROM rancher/dind:v0.2.0
 
 MAINTAINER Bill Maxwell "<bill@rancher.com>"
 
