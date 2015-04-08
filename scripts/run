@@ -17,9 +17,14 @@ fi
 
 wrapdocker
 
+# Try and clean up to save space
+docker rmi $(docker images -aq -f 'dangling=true')||true
+docker ps -a |grep -v mysql| grep -v ^CONTAINER|awk '{print $1}'|xargs docker rm -v
+
 if [ "$(docker ps -aq -f 'name=mysql-data-container'|wc -l)" -eq "0" ]; then
     docker run -d --name=mysql-data-container rancher/server:beta /bin/true
 fi
+
 
 ./scripts/build-projects
 
