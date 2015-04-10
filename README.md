@@ -31,6 +31,18 @@ Most people will never need to know this. In order to configure this image, you 
 : ${PYTHON_AGENT_WORK_DIR:=python-agent}
 : ${PYTHON_AGENT_COMMIT:=master}
 
+: ${HOST_API_REPO:="https://github.com/rancherio/host-api.git"}
+: ${HOST_API_WORK_DIR:=host-api}
+: ${HOST_API_COMMIT:=master}
+
+: ${UI_REPO:="https://github.com/rancherio/ui.git"}
+: ${UI_WORK_DIR:=ui}
+: ${UI_COMMIT:=master}
+
+: ${VALIDATION_TESTS_REPO:="https://github.com/rancherio/validation-tests.git"}
+: ${VALIDATION_TESTS_WORK_DIR:=validation-tests}
+: ${VALIDATION_TESTS_COMMIT:=master}
+
 : ${NODE_AGENT_REPO:="https://github.com/rancherio/node-agent.git"}
 : ${NODE_AGENT_WORK_DIR:=node-agent}
 : ${NODE_AGENT_COMMIT:=master}
