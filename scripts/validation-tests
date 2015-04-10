@@ -23,7 +23,7 @@ notify()
 
 notify_alert()
 {
-    message="@channel: ${1}"
+    message="<!channel>: ${1}"
     MESSAGE=${message} ../scripts/slack-notification
 }
 
