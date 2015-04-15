@@ -17,6 +17,8 @@ fi
 
 wrapdocker > /dev/null 2>&1
 
+# Need to pull any updates
+docker pull rancher/server:beta
 # Try and clean up to save space
 docker rmi $(docker images -aq -f 'dangling=true') || true
 docker ps -a |grep -v mysql| grep -v ^CONTAINER|awk '{print $1}'|xargs docker rm -v ||true
