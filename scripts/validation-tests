@@ -86,7 +86,7 @@ for ((i=0;i<300;i++))
 do
     if [[ "$(curl -s ${CATTLE_TEST_URL}/ping)" = "pong" ]]; then
         CURL_USER_OPTS="-u ${CATTLE_PROJECT_ACCESS_KEY}:${CATTLE_PROJECT_SECRET_KEY}"
-        if [ -z "${CATTLE_PROJECT_ACCESS_KEY}" || -z "${CATTLE_PROJECT_ACCESS_KEY}" ]; then
+        if [ -z "${CATTLE_PROJECT_ACCESS_KEY}" ] || [ -z "${CATTLE_PROJECT_ACCESS_KEY}" ]; then
             CURL_USER_OPTS=
         fi
             
