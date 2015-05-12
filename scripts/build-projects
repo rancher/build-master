@@ -17,7 +17,7 @@ build_projects()
             echo "building.. ${project}"
             wrap build
             if [ -n ${PROJECT_MAP["${project}_PACKAGE"]} ]; then
-                if [ ${PROJECT_MAP["${project}_PACKAGE"]} == "true" ]; then
+                if [ "${PROJECT_MAP["${project}_PACKAGE"]}" == "true" ]; then
                     wrap package
                 fi
             fi

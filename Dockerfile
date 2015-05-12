@@ -1,4 +1,4 @@
-FROM rancher/dind:v0.2.0
+FROM rancher/dind:v0.3.0
 
 MAINTAINER Bill Maxwell "<bill@rancher.com>"
 
