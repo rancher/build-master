@@ -1,5 +1,10 @@
 #!/bin/bash
 
+##
+# These tests are setup to run against latest by default, but 
+# should be able to be overriden for other environments
+##
+
 : ${CATTLE_TEST_URL:="http://latest.rancher.io:8080"}
 : ${PHANTOMJS_WEBDRIVER_PORT:-4444}
 : ${API_AUTH_GITHUB_TEST_USER:-$API_AUTH_GITHUB_TEST_USER}
@@ -10,8 +15,12 @@
 : ${DIGITALOCEAN_KEY:-$DIGITALOCEAN_KEY}
 : ${AMAZON_ACCESSKEY:-$AMAZON_ACCESSKEY}
 : ${AMAZON_SECRETKEY:-$AMAZON_SECRETKEY}
+: ${CATTLE_ACCESS_KEY:-$CATTLE_ACCESS_KEY}
+: ${CATTLE_SECRET_KEY:-$CATTLE_SECRET_KEY}
+: ${CATTLE_PROJECT_ACCESS_KEY:-$CATTLE_PROJECT_ACCESS_KEY}
+: ${CATTLE_PROJECT_SECRET_KEY:-$CATTLE_PROJECT_SECRET_KEY}
 
-export CATTLE_TEST_URL PHANTOMJS_WEBDRIVER_PORT
+export CATTLE_TEST_URL PHANTOMJS_WEBDRIVER_PORT CATTLE_ACCESS_KEY CATTLE_SECRET_KEY
 export API_AUTH_GITHUB_TEST_USER API_AUTH_GITHUB_TEST_PASS
 export API_AUTH_GITHUB_CLIENT_ID API_AUTH_RANCHER_TEST_PASS API_AUTH_GITHUB_CLIENT_SECRET
 export DIGITALOCEAN_KEY
@@ -20,7 +29,7 @@ export AMAZON_ACCESSKEY
 
 cd $(dirname $0)/..
 
-wrapdocker
+wrapdocker >/dev/null 2>&1
 
 notify()
 {
@@ -52,6 +61,8 @@ run_tests()
         -e "API_AUTH_GITHUB_CLIENT_ID=${API_AUTH_GITHUB_CLIENT_ID}" \
         -e "API_AUTH_RANCHER_TEST_PASS=${API_AUTH_RANCHER_TEST_PASS}" \
         -e "API_AUTH_GITHUB_CLIENT_SECRET=${API_AUTH_GITHUB_CLIENT_SECRET}" \
+        -e "CATTLE_SECRET_KEY=${CATTLE_SECRET_KEY}" \
+        -e "CATTLE_ACCESS_KEY=${CATTLE_ACCESS_KEY}" \
         -e "DIGITALOCEAN_KEY=${DIGITALOCEAN_KEY}" \
         -e "AMAZON_SECRETKEY=${AMAZON_SECRETKEY}" \
         -e "AMAZON_ACCESSKEY=${AMAZON_ACCESSKEY}" \
@@ -74,7 +85,12 @@ echo -n "Checking for ${CATTLE_TEST_URL} to become available "
 for ((i=0;i<300;i++))
 do
     if [[ "$(curl -s ${CATTLE_TEST_URL}/ping)" = "pong" ]]; then
-    	host_count=$(curl -s ${CATTLE_TEST_URL}/v1/hosts|python -mjson.tool|grep '"id"'|grep "1h.*"|wc -l)
+        CURL_USER_OPTS="-u ${CATTLE_PROJECT_ACCESS_KEY}:${CATTLE_PROJECT_SECRET_KEY}"
+        if [ -z "${CATTLE_PROJECT_ACCESS_KEY}" || -z "${CATTLE_PROJECT_ACCESS_KEY}" ]; then
+            CURL_USER_OPTS=
+        fi
+            
+    	host_count=$(curl -s ${CURL_USER_OPTS} ${CATTLE_TEST_URL}/v1/projects/1a5/hosts|python -mjson.tool|grep '"id"'|grep "1h.*"|wc -l)
 	    if [ "$host_count" -ge "3" ]; then
             echo "OK"
             break
