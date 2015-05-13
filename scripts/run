@@ -2,6 +2,8 @@
 
 set -e
 
+: ${SPACE_SAVER:=false}
+
 cd $(dirname $0)/..
 export PATH=$(pwd)/build-tools/bin:$PATH
 . ./scripts/common-vars
@@ -19,9 +21,12 @@ wrapdocker > /dev/null 2>&1
 
 # Need to pull any updates
 docker pull rancher/server:beta
-# Try and clean up to save space
-docker rmi $(docker images -aq -f 'dangling=true') || true
-docker ps -a |grep -v mysql| grep -v ^CONTAINER|awk '{print $1}'|xargs docker rm -v ||true
+
+if [ "${SPACE_SAVER}" = "true" ]; then
+    # Try and clean up to save space
+    docker rmi $(docker images -aq -f 'dangling=true') || true
+    docker ps -a |grep -v mysql| grep -v ^CONTAINER|awk '{print $1}'|xargs docker rm -v ||true
+fi
 
 if [ "$(docker ps -aq -f 'name=mysql-data-container'|wc -l)" -eq "0" ]; then
     docker run -d --name=mysql-data-container rancher/server:beta /bin/true
