@@ -8,19 +8,13 @@ cd $(dirname $0)/..
 export PATH=$(pwd)/build-tools/bin:$PATH
 . ./scripts/common-vars
 
-# hacking this...
-if [ -f /opt/cattle/cattle/Dockerfile ]; then
-    cd /opt/cattle/cattle
-    git checkout -- Dockerfile
-    cd -
-fi
-
 ./scripts/git-manager
 
-wrapdocker > /dev/null 2>&1
+if grep aufs /proc/filesystems > /dev/null 2>&1; then
+  export DOCKER_DRIVER=aufs 
+fi  
 
-# Need to pull any updates
-docker pull rancher/server:beta
+wrapdocker > /dev/null 2>&1
 
 if [ "${SPACE_SAVER}" = "true" ]; then
     # Try and clean up to save space
@@ -44,15 +38,11 @@ RUN_ARGS="$RUN_ARGS -e CATTLE_AGENT_PACKAGE_HOST_API_URL=$(pwd)/${PROJECT_MAP[HO
 RUN_ARGS="$RUN_ARGS -e CATTLE_AGENT_PACKAGE_NODE_AGENT_URL=$(pwd)/${PROJECT_MAP[NODE_AGENT_WORK_DIR]}"
 RUN_ARGS="$RUN_ARGS -e CATTLE_API_UI_INDEX=${CATTLE_UI_URL}"
 RUN_ARGS="$RUN_ARGS -e CATTLE_HTTP_PORT=8080"
+RUN_ARGS="$RUN_ARGS -e CATTLE_HTTP_PROXIED_PORT=8081"
 RUN_ARGS="$RUN_ARGS -e CATTLE_IDEMPOTENT_CHECKS=${CATTLE_IDEMPOTENT_CHECKS}"
 RUN_ARGS="$RUN_ARGS -e BOOTSTRAP_ON_RUN=true"
 RUN_ARGS="$RUN_ARGS -p 0.0.0.0:8080:8080"
 
 
 cd ./cattle
-cat > Dockerfile <<EOF
-FROM rancher/server:beta
-WORKDIR /source
-CMD ["echo", "Run a Command"]
-EOF
 wrap "$RUN_ARGS" run
