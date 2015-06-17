@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ##
-# These tests are setup to run against latest by default, but 
+# These tests are setup to run against latest by default, but
 # should be able to be overriden for other environments
 ##
 
@@ -42,6 +42,12 @@ notify_alert()
     MESSAGE=${message} ../scripts/slack-notification
 }
 
+send_failures()
+{
+    sed  's!^.*\(<testcase.*>\)<.*!\1!' /opt/cattle/validation/logs/validationTestsJunit.xml | grep "classname" | sed 's/"/\\"/g' > /tmp/failedTests.slack
+    notify `awk '$1=$1' ORS='\\n' /tmp/failedTests.slack`
+}
+
 bootstrap_validation_tests()
 {
     cd validation-tests
@@ -67,11 +73,13 @@ run_tests()
         -e "AMAZON_SECRETKEY=${AMAZON_SECRETKEY}" \
         -e "AMAZON_ACCESSKEY=${AMAZON_ACCESSKEY}" \
         -v $(pwd):/source \
+        -v /opt/cattle/validation/:/target \
         validation-test-container ./scripts/test
     if [ "$?" -eq "0" ]; then
         notify "Tests all Passed"
     else
         notify_alert "Rancher Latest Had Validation Test Failures!!!!"
+        send_failures
     fi
 }
 
@@ -89,7 +97,7 @@ do
         if [[ -z "${CATTLE_PROJECT_ACCESS_KEY}" ]] || [[ -z "${CATTLE_PROJECT_ACCESS_KEY}" ]]; then
             CURL_USER_OPTS=
         fi
-            
+
     	host_count=$(curl -s ${CURL_USER_OPTS} ${CATTLE_TEST_URL}/v1/projects/1a5/hosts|python -mjson.tool|grep '"id"'|grep "1h.*"|wc -l)
 	    if [ "$host_count" -ge "3" ]; then
             echo "OK"
