@@ -23,7 +23,8 @@ if [ "${SPACE_SAVER}" = "true" ]; then
 fi
 
 if [ "$(docker ps -aq -f 'name=mysql-data-container'|wc -l)" -eq "0" ]; then
-    docker run -d --name=mysql-data-container rancher/server:beta /bin/true
+    image=$(grep FROM ./cattle/Dockerfile|cut -f2 -d' ')
+    docker run -d --name=mysql-data-container -v /var/lib/mysql ${image} /bin/true
 fi
 
 
@@ -33,6 +34,7 @@ RUN_ARGS="$RUN_ARGS -v $(pwd)/${PROJECT_MAP[NODE_AGENT_WORK_DIR]}:$(pwd)/${PROJE
 RUN_ARGS="$RUN_ARGS -v $(pwd)/${PROJECT_MAP[PYTHON_AGENT_WORK_DIR]}:$(pwd)/${PROJECT_MAP[PYTHON_AGENT_WORK_DIR]}"
 RUN_ARGS="$RUN_ARGS -v $(pwd)/${PROJECT_MAP[HOST_API_WORK_DIR]}:$(pwd)/${PROJECT_MAP[HOST_API_WORK_DIR]}"
 RUN_ARGS="$RUN_ARGS --volumes-from=mysql-data-container"
+RUN_ARGS="$RUN_ARGS -e CATTLE_DB_CATTLE_DATABASE=mysql"
 RUN_ARGS="$RUN_ARGS -e CATTLE_AGENT_PACKAGE_PYTHON_AGENT_URL=$(pwd)/${PROJECT_MAP[PYTHON_AGENT_WORK_DIR]}"
 RUN_ARGS="$RUN_ARGS -e CATTLE_AGENT_PACKAGE_HOST_API_URL=$(pwd)/${PROJECT_MAP[HOST_API_WORK_DIR]}"
 RUN_ARGS="$RUN_ARGS -e CATTLE_AGENT_PACKAGE_NODE_AGENT_URL=$(pwd)/${PROJECT_MAP[NODE_AGENT_WORK_DIR]}"
