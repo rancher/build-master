@@ -25,7 +25,10 @@
 : ${BUILD_TOOLS_REPO:="https://github.com/rancherio/build-tools.git"}
 : ${BUILD_TOOLS_COMMIT:=master}
 
-: ${CATTLE_UI_URL:="http://releases.rancher.com/ui/latest/static/index.html"}
+: ${CATTLE_UI_URL:="//releases.rancher.com/ui/latest"}
+
+: ${CATTLE_LOGBACK_OUTPUT_CONSOLE:="true"}
+: ${CATTLE_LOGBACK_OUTPUT_LOGSTASH_CONSOLE:="false"}
  
 declare -A PROJECT_MAP
 
@@ -54,7 +57,9 @@ PROJECT_MAP[HOST_API_WORK_DIR]="${HOST_API_WORK_DIR}"
 PROJECT_MAP[HOST_API_COMMIT]="${HOST_API_COMMIT}"
 PROJECT_MAP[HOST_API_PACKAGE]="true"
 
-export PROJECT_MAP CATTLE_API_UI_INDEX
+export PROJECT_MAP CATTLE_API_UI_INDEX 
+export CATTLE_LOGBACK_OUTPUT_CONSOLE CATTLE_LOGBACK_OUTPUT_LOGSTASH_CONSOLE
+
 # These projects will be checked out and managed via git-man script
 export GIT_PROJECTS=("CATTLE" "NODE_AGENT" "PYTHON_AGENT" "HOST_API" "UI" "VALIDATION_TESTS")
 
