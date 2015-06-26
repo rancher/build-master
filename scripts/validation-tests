@@ -48,9 +48,7 @@ send_failures()
 {
     if [ -f "${1}" ];
     then
-        local TEMP_FILE="/tmp/failedTests.slack"
-        sed  's!^.*\(<testcase.*>\)<.*!\1!' ${1} | grep "classname" | sed 's/"/\\"/g' | cut -d " " -f 3 | cut -d "=" -f 2 | sed 's!"!!g' |  sed 's!\\!!g'> ${TEMP_FILE}
-        notify "$(awk '$1=$1' ORS='\\n' ${TEMP_FILE})"
+        notify $(docker run -it -v ${1}:${1} cloudnautique/ci-tool ./ci-tool ${1})
     else
         echo Log file ${1} Not Found.
     fi
