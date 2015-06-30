@@ -48,7 +48,8 @@ send_failures()
 {
     if [ -f "${1}" ];
     then
-        notify $(docker run -it -v ${1}:${1} cloudnautique/ci-tool ./ci-tool ${1})
+        docker pull cloudnautique/ci-tool
+        notify "$(docker run -it -e ESCAPED_NEWLINE=${ESCAPED_NEWLINE} -v ${1}:${1} cloudnautique/ci-tool ./ci-tool ${1})"
     else
         echo Log file ${1} Not Found.
     fi
@@ -87,7 +88,7 @@ run_tests()
         notify "Tests all Passed"
     else
         notify_alert "Rancher Latest Had Validation Test Failures!!!!"
-        send_failures "${VALIDATION_JUNIT_XML_PATH}/${VALIDATION_JUNIT_XML_FILE}"
+        send_failures "${VALIDATION_JUNIT_XML_PATH}${VALIDATION_JUNIT_XML_FILE}"
     fi
 }
 
