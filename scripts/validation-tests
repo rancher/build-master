@@ -49,7 +49,7 @@ send_failures()
     if [ -f "${1}" ];
     then
         docker pull cloudnautique/ci-tool
-        notify "$(docker run -it -e ESCAPED_NEWLINE=${ESCAPED_NEWLINE} -v ${1}:${1} cloudnautique/ci-tool ./ci-tool ${1})"
+        notify "$(docker run -e ESCAPED_NEWLINE=${ESCAPED_NEWLINE} -v ${1}:${1} cloudnautique/ci-tool ./ci-tool ${1})"
     else
         echo Log file ${1} Not Found.
     fi
