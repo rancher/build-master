@@ -50,7 +50,7 @@ Most people will never need to know this. In order to configure this image, you 
 : ${BUILD_TOOLS_REPO:="https://github.com/rancherio/build-tools.git"}
 : ${BUILD_TOOLS_COMMIT:=master}
 
-: ${CATTLE_UI_URL:="http://cdn.rancher.io/ui/latest/static/index.html"}
+: ${CATTLE_UI_URL:="http://releases.rancher.com/ui/latest/index.html"}
 ```
 
 These will control which repository and branch to checkout when building.
