@@ -6,11 +6,14 @@ This uses a Docker in Docker base image, and when you want to rebuild... restart
 To build:
 `docker build --rm -t rancher-dev-container .`
 
-To run:
-`docker run -it --privileged -p 8080:8080 --name=rancher-dev-container rancher-dev-container`
+To run the locally built version:
+`docker run -d --privileged -p 8080:8080 --name=rancher-dev-container rancher-dev-container`
 
 The command that is run by default is `/opt/cattle/scripts/run`
 This will checkout all of the repositories, build and fire up a container running on port 8080. This will be exposed out to the base contiainer.
+
+To run the version in Docker Hub:
+`docker run -d --privileged -p 8080:8080 rancher/build-master:latest`
 
 # Simple workflow
 Running this container will pull in all of the major dependencies on the master branch from the Rancher IO Github organization. Every time the container is restarted via:
