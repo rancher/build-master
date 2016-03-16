@@ -29,31 +29,31 @@ To override and/or use personal forks/branches, you can log into the container `
 Most people will never need to know this. In order to configure this image, you can set the following variables:
 
 ```
-: ${CATTLE_REPO:="https://github.com/rancherio/cattle.git"}
+: ${CATTLE_REPO:="https://github.com/rancher/cattle.git"}
 : ${CATTLE_WORK_DIR:=cattle}
 : ${CATTLE_COMMIT:=master}
 
-: ${PYTHON_AGENT_REPO:="https://github.com/rancherio/python-agent.git"}
+: ${PYTHON_AGENT_REPO:="https://github.com/rancher/python-agent.git"}
 : ${PYTHON_AGENT_WORK_DIR:=python-agent}
 : ${PYTHON_AGENT_COMMIT:=master}
 
-: ${HOST_API_REPO:="https://github.com/rancherio/host-api.git"}
+: ${HOST_API_REPO:="https://github.com/rancher/host-api.git"}
 : ${HOST_API_WORK_DIR:=host-api}
 : ${HOST_API_COMMIT:=master}
 
-: ${UI_REPO:="https://github.com/rancherio/ui.git"}
+: ${UI_REPO:="https://github.com/rancher/ui.git"}
 : ${UI_WORK_DIR:=ui}
 : ${UI_COMMIT:=master}
 
-: ${VALIDATION_TESTS_REPO:="https://github.com/rancherio/validation-tests.git"}
+: ${VALIDATION_TESTS_REPO:="https://github.com/rancher/validation-tests.git"}
 : ${VALIDATION_TESTS_WORK_DIR:=validation-tests}
 : ${VALIDATION_TESTS_COMMIT:=master}
 
-: ${NODE_AGENT_REPO:="https://github.com/rancherio/node-agent.git"}
+: ${NODE_AGENT_REPO:="https://github.com/rancher/node-agent.git"}
 : ${NODE_AGENT_WORK_DIR:=node-agent}
 : ${NODE_AGENT_COMMIT:=master}
 
-: ${BUILD_TOOLS_REPO:="https://github.com/rancherio/build-tools.git"}
+: ${BUILD_TOOLS_REPO:="https://github.com/rancher/build-tools.git"}
 : ${BUILD_TOOLS_COMMIT:=master}
 
 : ${CATTLE_UI_URL:="//releases.rancher.com/ui/latest"}
@@ -68,7 +68,7 @@ For bugs, questions, comments, corrections, suggestions, etc., open an issue in
 Or just [click here](//github.com/rancher/rancher/issues/new?title=%5Bbuild-master%5D%20) to create a new issue.
 
 # License
-Copyright (c) 2014-2015 [Rancher Labs, Inc.](http://rancher.com)
+Copyright (c) 2014-2016 [Rancher Labs, Inc.](http://rancher.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

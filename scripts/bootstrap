@@ -4,4 +4,4 @@ set -e
 
 cd $(dirname $0)/..
 
-git clone https://github.com/rancherio/build-tools.git
+git clone https://github.com/rancher/build-tools.git
